@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+
+  springboot:
+    build: ./springboot
+    container_name: backend_container
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+  angular:
+    build: ./angular-app
+    container_name: frontend_container
+    restart: always
+    ports:
+      - "4200:80"
+    depends_on:
+      - springboot
